@@ -1,0 +1,16 @@
+name: "Build Armbian for OrangePi 5 Plus"
+on:
+  workflow_dispatch:
+jobs:
+  build-armbian:
+    runs-on: ubuntu-24.04-arm # use ubuntu-24.04 when building x86 or riscv64
+    steps:
+      - uses: armbian/build@main
+        with:
+          armbian_token:           "${{ secrets.GITHUB_TOKEN }}"  # GitHub token
+          armbian_board:           "orangepi5-plus"
+          armbian_kernel_branch:   "vendor"
+          armbian_release:         "bookworm"
+          armbian_target:          "build"
+          armbian_ui:              "server"
+          armbian_release_tittle:  "Armbian for OrangePi 5 Plus"
