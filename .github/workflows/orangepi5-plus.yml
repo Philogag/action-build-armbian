@@ -13,7 +13,7 @@ jobs:
       - name: Build Armbian
         run: |
           cd build;
-          ./compile.sh build BOARD=orangepi5-plus BRANCH=vendor BUILD_DESKTOP=no BUILD_MINIMAL=no KERNEL_CONFIGURE=no RELEASE=bookworm
+          ./compile.sh build BOARD=orangepi5-plus BRANCH=vendor BUILD_DESKTOP=no BUILD_MINIMAL=no KERNEL_CONFIGURE=no RELEASE=bookworm PREFER_DOCKER=no
 
       - name: Release
         uses: softprops/action-gh-release@v2
