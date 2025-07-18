@@ -1,11 +1,9 @@
 name: "Build Armbian for OrangePi 5 Plus"
+
 on:
-  workflow_dispatch:
-    inputs:
-      tag:
-        type: string
-        description: "Release tag (e.g. v1.0.0)"
-        required: true
+  push:
+    tags:
+      - 'v*' # 匹配所有以 v 开头的 tag
 
 jobs:
   build-armbian:
