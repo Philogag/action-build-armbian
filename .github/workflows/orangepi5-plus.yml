@@ -1,6 +1,11 @@
 name: "Build Armbian for OrangePi 5 Plus"
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        type: string
+        description: "Release tag (e.g. v1.0.0)"
+        required: true
 
 jobs:
   build-armbian:
@@ -16,15 +21,18 @@ jobs:
           cd build;
           ./compile.sh build BOARD=orangepi5-plus BRANCH=vendor BUILD_DESKTOP=no BUILD_MINIMAL=no KERNEL_CONFIGURE=no RELEASE=bookworm PREFER_DOCKER=no;
           echo "status=success" >> $GITHUB_OUTPUT
-          echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
+
+      - name: Generate Release log
+        run: |
+          touch release.md
+          echo "## ${{ github.workflow }}" >> release.md       
 
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@master
         if: steps.build.outputs.status == 'success' && !cancelled()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.build.outputs.release_tag }}
+          tag_name: ${{ github.event.inputs.tag }}
+          body_path: release.md
           files: |
             build/output/images/*
             
