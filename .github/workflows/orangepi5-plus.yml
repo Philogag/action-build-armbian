@@ -14,7 +14,7 @@ jobs:
         id: build
         run: |
           cd build;
-          ./compile.sh build BOARD=orangepi5-plus BRANCH=vendor BUILD_DESKTOP=no BUILD_MINIMAL=no KERNEL_CONFIGURE=no RELEASE=bookworm PREFER_DOCKER=no;
+          ./compile.sh build BOARD=orangepi5-plus BRANCH=vendor BUILD_DESKTOP=no BUILD_MINIMAL=no KERNEL_CONFIGURE=no RELEASE=bookworm PREFER_DOCKER=no COMPRESS_OUTPUTIMAGE=xz;
           echo "status=success" >> $GITHUB_OUTPUT
           echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
 
