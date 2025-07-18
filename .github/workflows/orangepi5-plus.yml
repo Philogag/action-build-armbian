@@ -11,12 +11,19 @@ jobs:
           git clone --depth 1 --branch v25.05 https://github.com/armbian/build
 
       - name: Build Armbian
+        id: build
         run: |
           cd build;
-          ./compile.sh build BOARD=orangepi5-plus BRANCH=vendor BUILD_DESKTOP=no BUILD_MINIMAL=no KERNEL_CONFIGURE=no RELEASE=bookworm PREFER_DOCKER=no
+          ./compile.sh build BOARD=orangepi5-plus BRANCH=vendor BUILD_DESKTOP=no BUILD_MINIMAL=no KERNEL_CONFIGURE=no RELEASE=bookworm PREFER_DOCKER=no;
+          tree build/output/images
+          echo "status=success" >> $GITHUB_OUTPUT
+          echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
 
       - name: Release
         uses: softprops/action-gh-release@v2
+        if: steps.build.outputs.status == 'success' && !cancelled()
         with:
+          tag_name: ${{ steps.build.outputs.release_tag }}
           files: |
             build/output/images/*
+            
